@@ -1,5 +1,5 @@
 {
-    "name": "square1/laravel-idempotency",
+    "name": "igive/laravel-idempotency",
     "description": "Add idempotency to Laravel-based APIs, preventing duplicate request processing.",
     "type": "library",
     "keywords": [
