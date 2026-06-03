@@ -113,13 +113,15 @@ class IdempotencyMiddleware
     {
         $response = $next($request);
 
-        Cache::put($cacheKey, [
-            'body' => $response->getContent(),
-            'status' => $response->getStatusCode(),
-            'headers' => $response->headers->all(),
-            'path' => $request->path(),
-            'originalKey' => $request->header(config('idempotency.idempotency_header')),
-        ], config('idempotency.cache_duration'));
+        if ($response->getStatusCode() >= 200 && $response->getStatusCode() <= 201) {
+            Cache::put($cacheKey, [
+                'body' => $response->getContent(),
+                'status' => $response->getStatusCode(),
+                'headers' => $response->headers->all(),
+                'path' => $request->path(),
+                'originalKey' => $request->header(config('idempotency.idempotency_header')),
+            ], config('idempotency.cache_duration'));
+        }
 
         return $response;
     }
